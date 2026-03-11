@@ -1,0 +1,31 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Risparmia",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Risparmia",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "https://ai.studio/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "64x64 32x32 24x24 16x16"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Black_icon_-_wallet.svg/192px-Black_icon_-_wallet.svg.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Black_icon_-_wallet.svg/512px-Black_icon_-_wallet.svg.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "id": "Risparmia2026",
+  "description": "Appa per Salvare le spese"
+}
