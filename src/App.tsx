@@ -6,6 +6,77 @@ import { Prestiti } from './components/Prestiti';
 import { AddExpenseModal } from './components/AddExpenseModal';
 import { AddLoanModal } from './components/AddLoanModal';
 import { Expense, Loan } from './types';
+import { getLocalDateString } from './constants';
+
+const processRecurringExpenses = (currentExpenses: Expense[]): Expense[] => {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+
+  let newExpenses: Expense[] = [];
+  let hasChanges = false;
+
+  // Migrate old 'abbonamenti' to 'ricorrente'
+  const migratedExpenses = currentExpenses.map(e => {
+    if (e.categoryId === 'abbonamenti') {
+      hasChanges = true;
+      return { ...e, categoryId: 'ricorrente' };
+    }
+    return e;
+  });
+
+  // Find all recurring expenses
+  const recurringExpenses = migratedExpenses.filter(e => e.categoryId === 'ricorrente');
+
+  // Group by note and amount to find the latest date for each recurring item
+  const recurringGroups = new Map<string, Expense>();
+  
+  recurringExpenses.forEach(e => {
+    const key = `${e.note.trim().toLowerCase()}-${e.amount}`;
+    const existing = recurringGroups.get(key);
+    if (!existing || new Date(e.date) > new Date(existing.date)) {
+      recurringGroups.set(key, e);
+    }
+  });
+
+  // For each latest recurring expense, check if we need to add new ones for current/past months
+  recurringGroups.forEach(latestExpense => {
+    const latestDate = new Date(latestExpense.date);
+    let targetMonth = latestDate.getMonth() + 1;
+    let targetYear = latestDate.getFullYear();
+
+    while (targetYear < currentYear || (targetYear === currentYear && targetMonth <= currentMonth)) {
+      const newDate = new Date(targetYear, targetMonth, latestDate.getDate());
+      
+      if (newDate.getMonth() !== targetMonth) {
+        newDate.setDate(0); // Handle end of month overflow
+      }
+
+      // Only add if the new date is not in the future
+      if (newDate <= now) {
+        newExpenses.push({
+          ...latestExpense,
+          id: crypto.randomUUID(),
+          date: getLocalDateString(newDate)
+        });
+        hasChanges = true;
+      } else {
+        break;
+      }
+
+      targetMonth++;
+      if (targetMonth > 11) {
+        targetMonth = 0;
+        targetYear++;
+      }
+    }
+  });
+
+  if (hasChanges) {
+    return [...newExpenses, ...migratedExpenses].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }
+  return currentExpenses;
+};
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'home' | 'storico' | 'prestiti'>('home');
@@ -15,7 +86,8 @@ export default function App() {
   // State
   const [expenses, setExpenses] = useState<Expense[]>(() => {
     const saved = localStorage.getItem('expenses');
-    return saved ? JSON.parse(saved) : [];
+    const parsed = saved ? JSON.parse(saved) : [];
+    return processRecurringExpenses(parsed);
   });
 
   const [loans, setLoans] = useState<Loan[]>(() => {
@@ -24,7 +96,11 @@ export default function App() {
   });
 
   useEffect(() => {
-    localStorage.setItem('expenses', JSON.stringify(expenses));
+    const processed = processRecurringExpenses(expenses);
+    if (processed !== expenses) {
+      setExpenses(processed);
+    }
+    localStorage.setItem('expenses', JSON.stringify(processed));
   }, [expenses]);
 
   useEffect(() => {
@@ -51,8 +127,8 @@ export default function App() {
   return (
     <div className="bg-black min-h-screen text-white font-sans selection:bg-blue-500/30">
       <main className="max-w-md mx-auto relative min-h-screen">
-        {activeTab === 'home' && <Home expenses={expenses} />}
-        {activeTab === 'storico' && <Storico expenses={expenses} onDelete={handleDeleteExpense} />}
+        {activeTab === 'home' && <Home expenses={expenses} loans={loans} />}
+        {activeTab === 'storico' && <Storico expenses={expenses} loans={loans} onDelete={handleDeleteExpense} />}
         {activeTab === 'prestiti' && <Prestiti loans={loans} onTogglePaid={handleToggleLoanPaid} onDelete={handleDeleteLoan} />}
 
         {/* FAB */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Calendar as CalendarIcon, CreditCard, Banknote } from 'lucide-react';
-import { CATEGORIES } from '../constants';
+import { CATEGORIES, getLocalDateString } from '../constants';
 import { CalendarModal } from './CalendarModal';
 
 export function AddExpenseModal({ isOpen, onClose, onSave }: any) {
@@ -8,7 +8,7 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: any) {
   const [note, setNote] = useState('');
   const [categoryId, setCategoryId] = useState(CATEGORIES[0].id);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cash'>('card');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(getLocalDateString());
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: any) {
       setNote('');
       setCategoryId(CATEGORIES[0].id);
       setPaymentMethod('card');
-      setDate(new Date().toISOString().split('T')[0]);
+      setDate(getLocalDateString());
     }
   }, [isOpen]);
 

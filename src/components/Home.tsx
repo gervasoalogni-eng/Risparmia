@@ -1,11 +1,20 @@
 import React from 'react';
 import { DonutChart } from './DonutChart';
-import { CATEGORIES, formatCurrency, formatDate } from '../constants';
+import { CATEGORIES, formatCurrency, formatDate, getLocalDateString } from '../constants';
 
-export function Home({ expenses }: any) {
-  const currentMonth = new Date().toISOString().slice(0, 7);
+export function Home({ expenses, loans }: any) {
+  const currentMonth = getLocalDateString().slice(0, 7);
   const monthExpenses = expenses.filter((e: any) => e.date.startsWith(currentMonth));
-  const totalMonth = monthExpenses.reduce((sum: number, e: any) => sum + e.amount, 0);
+  const monthLoans = loans?.filter((l: any) => l.date.startsWith(currentMonth)) || [];
+  
+  const totalExpenses = monthExpenses.reduce((sum: number, e: any) => sum + e.amount, 0);
+  
+  // i_owe (debito) adds to expenses, owes_me (credito) subtracts from expenses
+  const loansImpact = monthLoans.reduce((sum: number, l: any) => {
+    return sum + (l.type === 'i_owe' ? l.amount : -l.amount);
+  }, 0);
+
+  const totalMonth = totalExpenses + loansImpact;
 
   const categoryData = CATEGORIES.map(cat => ({
     ...cat,
@@ -22,7 +31,7 @@ export function Home({ expenses }: any) {
       </header>
 
       <section className="bg-[#1C1C1E] rounded-3xl p-6 flex flex-col items-center shadow-lg">
-        <DonutChart data={categoryData} total={totalMonth} />
+        <DonutChart data={categoryData} total={totalExpenses} />
         {categoryData.length > 0 && (
           <div className="w-full mt-6 space-y-3">
             {categoryData.map(cat => (

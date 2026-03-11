@@ -1,12 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { X, Calendar as CalendarIcon, ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import { CalendarModal } from './CalendarModal';
+import { getLocalDateString } from '../constants';
 
 export function AddLoanModal({ isOpen, onClose, onSave, existingContacts }: any) {
   const [type, setType] = useState<'owes_me' | 'i_owe'>('owes_me');
   const [amount, setAmount] = useState('');
   const [name, setName] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(getLocalDateString());
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -15,7 +16,7 @@ export function AddLoanModal({ isOpen, onClose, onSave, existingContacts }: any)
       setType('owes_me');
       setAmount('');
       setName('');
-      setDate(new Date().toISOString().split('T')[0]);
+      setDate(getLocalDateString());
       setShowDropdown(false);
     }
   }, [isOpen]);
