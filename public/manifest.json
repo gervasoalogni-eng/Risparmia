@@ -10,20 +10,34 @@
   "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "https://ai.studio/favicon.ico",
-      "type": "image/x-icon",
-      "sizes": "64x64 32x32 24x24 16x16"
-    },
-    {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Black_icon_-_wallet.svg/192px-Black_icon_-_wallet.svg.png",
+      "src": "/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Black_icon_-_wallet.svg/512px-Black_icon_-_wallet.svg.png",
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/icon-512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "form_factor": "narrow"
     }
   ],
   "id": "Risparmia2026",
