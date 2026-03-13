@@ -1,13 +1,13 @@
 import { ShoppingCart, Utensils, Repeat, Car, Activity, ShoppingBag, MoreHorizontal } from 'lucide-react';
 
 export const CATEGORIES = [
-  { id: 'supermercato', name: 'Supermercato', color: '#FFD60A', icon: ShoppingCart },
-  { id: 'ristoranti', name: 'Ristoranti', color: '#FF9F0A', icon: Utensils },
-  { id: 'ricorrente', name: 'Ricorrente', color: '#BF5AF2', icon: Repeat },
-  { id: 'trasporti', name: 'Trasporti', color: '#0A84FF', icon: Car },
-  { id: 'fitness', name: 'Fitness', color: '#FF453A', icon: Activity },
-  { id: 'shopping', name: 'Shopping', color: '#FF375F', icon: ShoppingBag },
-  { id: 'altro', name: 'Altro', color: '#8E8E93', icon: MoreHorizontal },
+  { id: 'supermercato', name: 'Supermercato', color: '#FFD60A', icon: ShoppingCart, iconName: 'ShoppingCart' },
+  { id: 'ristoranti', name: 'Ristoranti', color: '#FF9F0A', icon: Utensils, iconName: 'Utensils' },
+  { id: 'ricorrente', name: 'Ricorrente', color: '#BF5AF2', icon: Repeat, iconName: 'Repeat' },
+  { id: 'trasporti', name: 'Trasporti', color: '#0A84FF', icon: Car, iconName: 'Car' },
+  { id: 'fitness', name: 'Fitness', color: '#FF453A', icon: Activity, iconName: 'Activity' },
+  { id: 'shopping', name: 'Shopping', color: '#FF375F', icon: ShoppingBag, iconName: 'ShoppingBag' },
+  { id: 'altro', name: 'Altro', color: '#8E8E93', icon: MoreHorizontal, iconName: 'MoreHorizontal' },
 ];
 
 export const getLocalDateString = (date: Date = new Date()) => {

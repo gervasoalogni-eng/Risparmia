@@ -48,7 +48,7 @@ export function CalendarModal({ isOpen, onClose, onSelect, initialDate }: any) {
             <button onClick={handleNextMonth} className="p-2 text-white"><ChevronRight size={20} /></button>
           </div>
           <div className="grid grid-cols-7 gap-1 mb-2">
-            {dayNames.map(d => <div key={d} className="text-center text-gray-500 text-sm">{d}</div>)}
+            {dayNames.map((d, i) => <div key={`${d}-${i}`} className="text-center text-gray-500 text-sm">{d}</div>)}
           </div>
           <div className="grid grid-cols-7 gap-1">
             {Array.from({ length: startingDay }).map((_, i) => <div key={`empty-${i}`} />)}

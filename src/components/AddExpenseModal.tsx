@@ -1,34 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { X, Calendar as CalendarIcon, CreditCard, Banknote } from 'lucide-react';
-import { CATEGORIES, getLocalDateString } from '../constants';
+import { getLocalDateString } from '../constants';
 import { CalendarModal } from './CalendarModal';
 
-export function AddExpenseModal({ isOpen, onClose, onSave }: any) {
+export function AddExpenseModal({ isOpen, onClose, onSave, expenseToEdit, categories }: any) {
   const [amount, setAmount] = useState('');
   const [note, setNote] = useState('');
-  const [categoryId, setCategoryId] = useState(CATEGORIES[0].id);
+  const [categoryId, setCategoryId] = useState(categories?.[0]?.id || '');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'cash'>('card');
   const [date, setDate] = useState(getLocalDateString());
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
-      setAmount('');
-      setNote('');
-      setCategoryId(CATEGORIES[0].id);
-      setPaymentMethod('card');
-      setDate(getLocalDateString());
+      if (expenseToEdit) {
+        setAmount(expenseToEdit.amount.toString().replace('.', ','));
+        setNote(expenseToEdit.note || '');
+        setCategoryId(expenseToEdit.categoryId);
+        setPaymentMethod(expenseToEdit.paymentMethod);
+        setDate(expenseToEdit.date);
+      } else {
+        setAmount('');
+        setNote('');
+        setCategoryId(categories?.[0]?.id || '');
+        setPaymentMethod('card');
+        setDate(getLocalDateString());
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, expenseToEdit, categories]);
 
   if (!isOpen) return null;
 
   const handleSave = () => {
-    const numAmount = parseFloat(amount.replace(',', '.'));
+    const numAmount = parseFloat(amount.replace(/\./g, '').replace(',', '.'));
     if (!amount || isNaN(numAmount) || numAmount <= 0) return;
     
     onSave({
-      id: crypto.randomUUID(),
+      id: expenseToEdit ? expenseToEdit.id : crypto.randomUUID(),
       amount: numAmount,
       note: note.trim(),
       categoryId,
@@ -43,11 +51,11 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: any) {
       <div className="bg-[#1C1C1E] rounded-t-3xl w-full max-h-[90vh] overflow-y-auto pb-safe animate-in slide-in-from-bottom-full duration-300">
         <div className="sticky top-0 bg-[#1C1C1E] flex justify-between items-center p-4 border-b border-[#2C2C2E] z-10 rounded-t-3xl">
           <button onClick={onClose} className="text-gray-400 p-2"><X size={24} /></button>
-          <h2 className="text-white font-semibold text-lg">Nuova Spesa</h2>
+          <h2 className="text-white font-semibold text-lg">{expenseToEdit ? 'Modifica Spesa' : 'Nuova Spesa'}</h2>
           <button 
             onClick={handleSave} 
-            className={`font-semibold p-2 ${amount && parseFloat(amount.replace(',', '.')) > 0 ? 'text-blue-500' : 'text-gray-500'}`}
-            disabled={!amount || parseFloat(amount.replace(',', '.')) <= 0}
+            className={`font-semibold p-2 ${amount && parseFloat(amount.replace(/\./g, '').replace(',', '.')) > 0 ? 'text-blue-500' : 'text-gray-500'}`}
+            disabled={!amount || parseFloat(amount.replace(/\./g, '').replace(',', '.')) <= 0}
           >
             Salva
           </button>
@@ -63,7 +71,13 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: any) {
                 inputMode="decimal"
                 value={amount}
                 onChange={e => {
-                  const val = e.target.value.replace(/[^0-9.,]/g, '');
+                  let val = e.target.value.replace(/[^0-9.,]/g, '');
+                  // Prevent multiple commas/dots
+                  const commaCount = (val.match(/,/g) || []).length;
+                  const dotCount = (val.match(/\./g) || []).length;
+                  if (commaCount + dotCount > 1) {
+                    return;
+                  }
                   setAmount(val);
                 }}
                 placeholder="0,00"
@@ -88,7 +102,7 @@ export function AddExpenseModal({ isOpen, onClose, onSave }: any) {
           <div>
             <h3 className="text-gray-400 text-sm mb-3 uppercase tracking-wider">Categoria</h3>
             <div className="grid grid-cols-4 gap-4">
-              {CATEGORIES.map(cat => {
+              {categories.map((cat: any) => {
                 const Icon = cat.icon;
                 const isSelected = categoryId === cat.id;
                 return (

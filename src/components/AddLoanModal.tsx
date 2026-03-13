@@ -3,7 +3,7 @@ import { X, Calendar as CalendarIcon, ArrowDownRight, ArrowUpRight } from 'lucid
 import { CalendarModal } from './CalendarModal';
 import { getLocalDateString } from '../constants';
 
-export function AddLoanModal({ isOpen, onClose, onSave, existingContacts }: any) {
+export function AddLoanModal({ isOpen, onClose, onSave, existingContacts, loanToEdit }: any) {
   const [type, setType] = useState<'owes_me' | 'i_owe'>('owes_me');
   const [amount, setAmount] = useState('');
   const [name, setName] = useState('');
@@ -13,13 +13,20 @@ export function AddLoanModal({ isOpen, onClose, onSave, existingContacts }: any)
 
   useEffect(() => {
     if (isOpen) {
-      setType('owes_me');
-      setAmount('');
-      setName('');
-      setDate(getLocalDateString());
+      if (loanToEdit) {
+        setType(loanToEdit.type);
+        setAmount(loanToEdit.amount.toString().replace('.', ','));
+        setName(loanToEdit.name);
+        setDate(loanToEdit.date);
+      } else {
+        setType('owes_me');
+        setAmount('');
+        setName('');
+        setDate(getLocalDateString());
+      }
       setShowDropdown(false);
     }
-  }, [isOpen]);
+  }, [isOpen, loanToEdit]);
 
   const filteredContacts = useMemo(() => {
     if (!name) return existingContacts;
@@ -29,16 +36,16 @@ export function AddLoanModal({ isOpen, onClose, onSave, existingContacts }: any)
   if (!isOpen) return null;
 
   const handleSave = () => {
-    const numAmount = parseFloat(amount.replace(',', '.'));
+    const numAmount = parseFloat(amount.replace(/\./g, '').replace(',', '.'));
     if (!amount || isNaN(numAmount) || numAmount <= 0 || !name.trim()) return;
     
     onSave({
-      id: crypto.randomUUID(),
+      id: loanToEdit ? loanToEdit.id : crypto.randomUUID(),
       type,
       name: name.trim(),
       amount: numAmount,
       date,
-      isPaid: false
+      isPaid: loanToEdit ? loanToEdit.isPaid : false
     });
     onClose();
   };
@@ -48,11 +55,11 @@ export function AddLoanModal({ isOpen, onClose, onSave, existingContacts }: any)
       <div className="bg-[#1C1C1E] rounded-t-3xl w-full max-h-[90vh] overflow-y-auto pb-safe animate-in slide-in-from-bottom-full duration-300">
         <div className="sticky top-0 bg-[#1C1C1E] flex justify-between items-center p-4 border-b border-[#2C2C2E] z-10 rounded-t-3xl">
           <button onClick={onClose} className="text-gray-400 p-2"><X size={24} /></button>
-          <h2 className="text-white font-semibold text-lg">Nuovo Prestito</h2>
+          <h2 className="text-white font-semibold text-lg">{loanToEdit ? 'Modifica Prestito' : 'Nuovo Prestito'}</h2>
           <button 
             onClick={handleSave} 
-            className={`font-semibold p-2 ${amount && parseFloat(amount.replace(',', '.')) > 0 && name.trim() ? 'text-blue-500' : 'text-gray-500'}`}
-            disabled={!amount || parseFloat(amount.replace(',', '.')) <= 0 || !name.trim()}
+            className={`font-semibold p-2 ${amount && parseFloat(amount.replace(/\./g, '').replace(',', '.')) > 0 && name.trim() ? 'text-blue-500' : 'text-gray-500'}`}
+            disabled={!amount || parseFloat(amount.replace(/\./g, '').replace(',', '.')) <= 0 || !name.trim()}
           >
             Salva
           </button>
@@ -84,7 +91,13 @@ export function AddLoanModal({ isOpen, onClose, onSave, existingContacts }: any)
                 inputMode="decimal"
                 value={amount}
                 onChange={e => {
-                  const val = e.target.value.replace(/[^0-9.,]/g, '');
+                  let val = e.target.value.replace(/[^0-9.,]/g, '');
+                  // Prevent multiple commas/dots
+                  const commaCount = (val.match(/,/g) || []).length;
+                  const dotCount = (val.match(/\./g) || []).length;
+                  if (commaCount + dotCount > 1) {
+                    return;
+                  }
                   setAmount(val);
                 }}
                 placeholder="0,00"

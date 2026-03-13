@@ -5,6 +5,7 @@ export type Expense = {
   categoryId: string;
   paymentMethod: 'card' | 'cash';
   date: string;
+  stoppedDate?: string;
 };
 
 export type Loan = {
@@ -14,4 +15,5 @@ export type Loan = {
   amount: number;
   date: string;
   isPaid: boolean;
+  paidDate?: string;
 };

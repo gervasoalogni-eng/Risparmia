@@ -3,7 +3,7 @@ import { formatCurrency, formatDate } from '../constants';
 import { CheckCircle2, Circle, Trash2 } from 'lucide-react';
 import { ConfirmModal } from './ConfirmModal';
 
-export function Prestiti({ loans, onTogglePaid, onDelete }: any) {
+export function Prestiti({ loans, onTogglePaid, onDelete, onEdit }: any) {
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const owesMe = loans.filter((l: any) => l.type === 'owes_me');
@@ -27,10 +27,16 @@ export function Prestiti({ loans, onTogglePaid, onDelete }: any) {
           {list.map((loan: any) => (
             <div 
               key={loan.id} 
-              onClick={() => onTogglePaid(loan.id)}
-              className={`bg-[#1C1C1E] rounded-2xl p-4 flex items-center gap-4 cursor-pointer transition-opacity ${loan.isPaid ? 'opacity-50' : ''}`}
+              onClick={() => onEdit && onEdit(loan)}
+              className={`bg-[#1C1C1E] rounded-2xl p-4 flex items-center gap-4 cursor-pointer hover:bg-[#2C2C2E] transition-colors ${loan.isPaid ? 'opacity-50' : ''}`}
             >
-              <button className={`shrink-0 ${loan.isPaid ? colorClass : 'text-gray-500'}`}>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onTogglePaid(loan.id);
+                }}
+                className={`shrink-0 ${loan.isPaid ? colorClass : 'text-gray-500'}`}
+              >
                 {loan.isPaid ? <CheckCircle2 size={24} /> : <Circle size={24} />}
               </button>
               <div className="flex-1 min-w-0">
