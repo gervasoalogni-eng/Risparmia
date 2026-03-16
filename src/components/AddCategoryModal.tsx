@@ -61,8 +61,8 @@ export function AddCategoryModal({ isOpen, onClose, onSave, categoryToEdit }: Ad
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 sm:p-0">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-[#1C1C1E] w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-in slide-in-from-bottom-full sm:slide-in-from-bottom-10 duration-300">
-        <div className="flex justify-between items-center mb-6">
+      <div className="relative bg-[#1C1C1E] w-full max-w-md rounded-t-3xl sm:rounded-3xl shadow-2xl animate-in slide-in-from-bottom-full sm:slide-in-from-bottom-10 duration-300 max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="flex justify-between items-center p-6 shrink-0 border-b border-[#2C2C2E]">
           <h2 className="text-xl font-bold text-white">
             {categoryToEdit ? 'Modifica Categoria' : 'Nuova Categoria'}
           </h2>
@@ -71,7 +71,7 @@ export function AddCategoryModal({ isOpen, onClose, onSave, categoryToEdit }: Ad
           </button>
         </div>
 
-        <div className="space-y-6">
+        <div className="p-6 space-y-6 overflow-y-auto">
           <div>
             <label className="block text-sm font-medium text-gray-400 mb-2">Nome</label>
             <div className="relative">
@@ -122,13 +122,21 @@ export function AddCategoryModal({ isOpen, onClose, onSave, categoryToEdit }: Ad
             </div>
           </div>
 
-          <button
-            onClick={handleSave}
-            disabled={!name.trim()}
-            className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-blue-500/50 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-2xl transition-colors active:scale-[0.98]"
-          >
-            Salva Categoria
-          </button>
+          <div className="pt-2 flex gap-3">
+            <button
+              onClick={onClose}
+              className="flex-1 bg-[#2C2C2E] hover:bg-[#3A3A3C] text-white font-semibold py-4 rounded-2xl transition-colors active:scale-[0.98]"
+            >
+              Annulla
+            </button>
+            <button
+              onClick={handleSave}
+              disabled={!name.trim()}
+              className="flex-1 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-500/50 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-2xl transition-colors active:scale-[0.98]"
+            >
+              Salva
+            </button>
+          </div>
         </div>
       </div>
     </div>

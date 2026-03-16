@@ -18,26 +18,17 @@ export function Home({ categories, expenses, loans, onEditExpense, onEditLoan }:
     const loansImpact = (loans || []).reduce((sum: number, l: any) => {
       let impact = 0;
       if (l.date.startsWith(currentMonth)) {
-        impact += (l.type === 'owes_me' ? l.amount : -l.amount);
+        impact += l.amount;
       }
-      if (l.isPaid && l.paidDate?.startsWith(currentMonth)) {
-        impact += (l.type === 'owes_me' ? -l.amount : l.amount);
+      if (l.isPaid && l.paidDate?.startsWith(currentMonth) && l.type === 'owes_me') {
+        impact -= l.amount;
       }
       return sum + impact;
     }, 0);
 
     const tMonth = totalExpenses + loansImpact;
 
-    const loansOut = (loans || []).reduce((sum: number, l: any) => {
-      let out = 0;
-      if (l.date.startsWith(currentMonth) && l.type === 'owes_me') {
-        out += l.amount;
-      }
-      if (l.isPaid && l.paidDate?.startsWith(currentMonth) && l.type === 'i_owe') {
-        out += l.amount;
-      }
-      return sum + out;
-    }, 0);
+    const loansOut = loansImpact;
 
     const catData = categories.map((cat: any) => ({
       ...cat,
@@ -94,12 +85,12 @@ export function Home({ categories, expenses, loans, onEditExpense, onEditLoan }:
         {categoryData.length > 0 && (
           <div className="w-full mt-6 space-y-3">
             {categoryData.map((cat: any) => (
-              <div key={cat.id} className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: cat.color }} />
-                  <span className="text-gray-300">{cat.name}</span>
+              <div key={cat.id} className="flex items-center justify-between text-sm gap-2">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: cat.color }} />
+                  <span className="text-gray-300 truncate">{cat.name}</span>
                 </div>
-                <span className="text-white font-medium">{formatCurrency(cat.value)}</span>
+                <span className="text-white font-medium shrink-0">{formatCurrency(cat.value)}</span>
               </div>
             ))}
           </div>
@@ -132,8 +123,8 @@ export function Home({ categories, expenses, loans, onEditExpense, onEditLoan }:
                         {isOwesMe ? 'Mi deve' : 'Devo a'} {item.isPaid ? '(Saldato)' : ''} • {formatDate(item.date)}
                       </div>
                     </div>
-                    <div className={`font-semibold ${isOwesMe ? 'text-white' : 'text-green-500'}`}>
-                      {isOwesMe ? '-' : '+'}{formatCurrency(item.amount)}
+                    <div className="font-semibold text-white">
+                      -{formatCurrency(item.amount)}
                     </div>
                   </div>
                 );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Home as HomeIcon, History, Users, Plus, Settings as SettingsIcon } from 'lucide-react';
 import * as Icons from 'lucide-react';
+import { motion } from 'motion/react';
 import { Home } from './components/Home';
 import { Storico } from './components/Storico';
 import { Prestiti } from './components/Prestiti';
@@ -243,13 +244,17 @@ export default function App() {
         {activeTab === 'settings' && <Settings categories={categories} setCategories={setCategories} expenses={expenses} setExpenses={setExpenses} loans={loans} setLoans={setLoans} showToast={showToast} />}
 
         {/* FAB */}
-        <button 
+        <motion.button 
+          drag
+          dragConstraints={typeof window !== 'undefined' ? { left: -window.innerWidth + 80, right: 0, top: -window.innerHeight + 160, bottom: 0 } : undefined}
+          dragElastic={0.1}
+          dragMomentum={false}
           onClick={handleFabClick}
-          className={`fixed bottom-24 right-6 w-14 h-14 bg-blue-500 hover:bg-blue-600 active:scale-95 transition-all rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(10,132,255,0.4)] z-30 ${activeTab === 'settings' ? 'hidden' : ''}`}
+          className={`fixed bottom-24 right-6 w-14 h-14 bg-blue-500 hover:bg-blue-600 active:scale-95 transition-colors rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(10,132,255,0.4)] z-30 ${activeTab === 'settings' ? 'hidden' : ''}`}
           aria-label="Aggiungi"
         >
           <Plus size={28} className="text-white" />
-        </button>
+        </motion.button>
 
         {/* Bottom Nav */}
         <nav className="fixed bottom-0 w-full max-w-md bg-[#1C1C1E]/90 backdrop-blur-lg border-t border-[#2C2C2E] flex justify-around items-center h-20 pb-safe z-30">
