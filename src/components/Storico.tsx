@@ -151,11 +151,11 @@ export function Storico({ categories, expenses, loans, onDeleteExpense, onDelete
       <header className="pt-4 flex flex-col items-center">
         <h1 className="text-xl font-bold text-white mb-6">Report</h1>
         <div className="flex items-center justify-between w-full max-w-xs">
-          <button onClick={prevMonth} className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-full transition-colors">
+          <button onClick={prevMonth} className="p-2 text-[#5ce1e6] hover:bg-[#5ce1e6]/10 rounded-full transition-colors">
             <ChevronLeft size={24} />
           </button>
           <h2 className="text-2xl font-bold text-white capitalize">{monthName}</h2>
-          <button onClick={nextMonth} className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-full transition-colors">
+          <button onClick={nextMonth} className="p-2 text-[#5ce1e6] hover:bg-[#5ce1e6]/10 rounded-full transition-colors">
             <ChevronRight size={24} />
           </button>
         </div>
@@ -208,7 +208,7 @@ export function Storico({ categories, expenses, loans, onDeleteExpense, onDelete
         <div className="flex justify-around items-end h-32 mb-6">
           <div className="flex flex-col items-center gap-2 w-1/3 h-full">
             <div className="flex-1 w-full flex items-end justify-center">
-              <div className="w-12 bg-blue-500 rounded-t-xl transition-all duration-500" style={{ height: `${(cardTotal / maxPayment) * 100}%`, minHeight: '4px' }} />
+              <div className="w-12 bg-[#5ce1e6] rounded-t-xl transition-all duration-500" style={{ height: `${(cardTotal / maxPayment) * 100}%`, minHeight: '4px' }} />
             </div>
             <span className="text-sm text-gray-400">Carta</span>
           </div>
@@ -222,7 +222,7 @@ export function Storico({ categories, expenses, loans, onDeleteExpense, onDelete
         <div className="space-y-3">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-blue-500" />
+              <div className="w-3 h-3 rounded-full bg-[#5ce1e6]" />
               <span className="text-gray-300">Carta</span>
             </div>
             <span className="text-white font-medium">{formatCurrency(cardTotal)}</span>
@@ -280,7 +280,7 @@ export function Storico({ categories, expenses, loans, onDeleteExpense, onDelete
                         className={`bg-[#1C1C1E] rounded-2xl p-4 flex items-center gap-4 group cursor-pointer hover:bg-[#2C2C2E] transition-colors ${item.isPaid ? 'opacity-50' : ''}`}
                         onClick={() => onEditLoan && onEditLoan(item)}
                       >
-                        <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-blue-500/20 text-blue-500">
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-[#5ce1e6]/20 text-[#5ce1e6]">
                           <Users size={20} />
                         </div>
                         <div className="flex-1 min-w-0">

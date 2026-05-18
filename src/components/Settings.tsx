@@ -4,12 +4,23 @@ import * as Icons from 'lucide-react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { ConfirmModal } from './ConfirmModal';
 import { AddCategoryModal } from './AddCategoryModal';
+import { Category, Expense, Loan } from '../types';
 
-export function Settings({ categories, setCategories, expenses, loans, setExpenses, setLoans, showToast }: any) {
+interface SettingsProps {
+  categories: Category[];
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
+  expenses: Expense[];
+  loans: Loan[];
+  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
+  setLoans: React.Dispatch<React.SetStateAction<Loan[]>>;
+  showToast: (msg: string) => void;
+}
+
+export function Settings({ categories, setCategories, expenses, loans, setExpenses, setLoans, showToast }: SettingsProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [deleteCatId, setDeleteCatId] = useState<string | null>(null);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
-  const [categoryToEdit, setCategoryToEdit] = useState<any | null>(null);
+  const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null);
 
   const onDragEnd = (result: any) => {
     if (!result.destination) return;
@@ -22,13 +33,21 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
   };
 
   const handleExport = () => {
+    // Export categories with iconName instead of icon component
+    const categoriesToExport = categories.map(cat => ({
+      id: cat.id,
+      name: cat.name,
+      color: cat.color,
+      iconName: cat.iconName
+    }));
+
     const data = {
       spese: expenses,
       prestiti: loans,
-      categorie: categories,
+      categorie: categoriesToExport,
       expenses, // backward compatibility
       loans, // backward compatibility
-      categories, // backward compatibility
+      categories: categoriesToExport, // backward compatibility
       exportDate: new Date().toISOString()
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -64,7 +83,7 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
           if (importedExpenses) setExpenses(importedExpenses);
           if (importedLoans) setLoans(importedLoans);
           if (importedCategories) {
-            const mappedCategories = importedCategories.map((cat: any) => ({
+            const mappedCategories = importedCategories.map((cat: Category) => ({
               ...cat,
               icon: cat.iconName ? (Icons as any)[cat.iconName] : Icons.Tag
             }));
@@ -80,12 +99,12 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  const handleSaveCategory = (category: any) => {
+  const handleSaveCategory = (category: Category) => {
     if (categoryToEdit) {
-      setCategories((prev: any) => prev.map((c: any) => c.id === category.id ? category : c));
+      setCategories((prev: Category[]) => prev.map((c: Category) => c.id === category.id ? category : c));
       showToast('Categoria modificata!');
     } else {
-      setCategories((prev: any) => [...prev, category]);
+      setCategories((prev: Category[]) => [...prev, category]);
       showToast('Categoria aggiunta!');
     }
   };
@@ -96,7 +115,7 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
       setDeleteCatId(null);
       return;
     }
-    setCategories((prev: any) => prev.filter((c: any) => c.id !== id));
+    setCategories((prev: Category[]) => prev.filter((c: Category) => c.id !== id));
     showToast('Categoria eliminata!');
     setDeleteCatId(null);
   };
@@ -116,7 +135,7 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
         <div className="flex flex-col gap-3">
           <button 
             onClick={handleExport}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 rounded-xl flex items-center justify-center gap-2 transition-colors"
+            className="w-full bg-[#5ce1e6] hover:bg-[#4dd1d6] text-white font-medium py-3 rounded-xl flex items-center justify-center gap-2 transition-colors"
           >
             <Download size={20} />
             Esporta Dati (JSON)
@@ -147,7 +166,7 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
               setCategoryToEdit(null);
               setIsCategoryModalOpen(true);
             }}
-            className="p-2 text-blue-500 bg-blue-500/10 rounded-full hover:bg-blue-500/20 transition-colors"
+            className="p-2 text-[#5ce1e6] bg-[#5ce1e6]/10 rounded-full hover:bg-[#5ce1e6]/20 transition-colors"
           >
             <Plus size={20} />
           </button>
@@ -161,7 +180,7 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {categories.map((cat: any, index: number) => {
+                {categories.map((cat: Category, index: number) => {
                   const Icon = cat.icon;
                   return (
                     <Draggable key={cat.id} draggableId={cat.id} index={index} {...({} as any)}>
@@ -169,7 +188,7 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
                         <div 
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          className={`flex items-center justify-between p-3 bg-[#2C2C2E] rounded-xl group ${snapshot.isDragging ? 'shadow-lg ring-2 ring-blue-500/50 z-50' : ''}`}
+                          className={`flex items-center justify-between p-3 bg-[#2C2C2E] rounded-xl group ${snapshot.isDragging ? 'shadow-lg ring-2 ring-[#5ce1e6]/50 z-50' : ''}`}
                         >
                           <div className="flex items-center gap-3 flex-1 min-w-0">
                             <div 
@@ -189,7 +208,7 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
                                 setCategoryToEdit(cat);
                                 setIsCategoryModalOpen(true);
                               }}
-                              className="p-2 text-gray-400 hover:text-blue-500 transition-colors"
+                              className="p-2 text-gray-400 hover:text-[#5ce1e6] transition-colors"
                             >
                               <Edit2 size={18} />
                             </button>

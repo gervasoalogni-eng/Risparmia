@@ -82,7 +82,7 @@ export function AddCategoryModal({ isOpen, onClose, onSave, categoryToEdit }: Ad
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-[#2C2C2E] text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="w-full bg-[#2C2C2E] text-white rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-[#5ce1e6] transition-all"
                 placeholder="Es. Spesa, Auto..."
                 autoFocus
               />

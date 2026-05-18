@@ -16,4 +16,13 @@ export type Loan = {
   date: string;
   isPaid: boolean;
   paidDate?: string;
+  description?: string;
+};
+
+export type Category = {
+  id: string;
+  name: string;
+  color: string;
+  iconName: string;
+  icon?: any;
 };

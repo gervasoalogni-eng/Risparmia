@@ -42,6 +42,7 @@ export function Prestiti({ loans, onTogglePaid, onDelete, onEdit }: any) {
               <div className="flex-1 min-w-0">
                 <div className={`text-white font-medium truncate ${loan.isPaid ? 'line-through text-gray-400' : ''}`}>{loan.name}</div>
                 <div className="text-gray-400 text-xs">{formatDate(loan.date)}</div>
+                {loan.description && <div className="text-gray-500 text-xs mt-1 truncate">{loan.description}</div>}
               </div>
               <div className={`font-semibold ${loan.isPaid ? 'text-gray-400 line-through' : colorClass}`}>
                 {formatCurrency(loan.amount)}
