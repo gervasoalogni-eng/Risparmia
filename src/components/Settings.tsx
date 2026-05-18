@@ -135,7 +135,7 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
         <div className="flex flex-col gap-3">
           <button 
             onClick={handleExport}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 rounded-xl flex items-center justify-center gap-2 transition-colors"
+            className="w-full bg-[#5ce1e6] hover:bg-[#4dd1d6] text-white font-medium py-3 rounded-xl flex items-center justify-center gap-2 transition-colors"
           >
             <Download size={20} />
             Esporta Dati (JSON)
@@ -166,7 +166,7 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
               setCategoryToEdit(null);
               setIsCategoryModalOpen(true);
             }}
-            className="p-2 text-blue-500 bg-blue-500/10 rounded-full hover:bg-blue-500/20 transition-colors"
+            className="p-2 text-[#5ce1e6] bg-[#5ce1e6]/10 rounded-full hover:bg-[#5ce1e6]/20 transition-colors"
           >
             <Plus size={20} />
           </button>
@@ -188,7 +188,7 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
                         <div 
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          className={`flex items-center justify-between p-3 bg-[#2C2C2E] rounded-xl group ${snapshot.isDragging ? 'shadow-lg ring-2 ring-blue-500/50 z-50' : ''}`}
+                          className={`flex items-center justify-between p-3 bg-[#2C2C2E] rounded-xl group ${snapshot.isDragging ? 'shadow-lg ring-2 ring-[#5ce1e6]/50 z-50' : ''}`}
                         >
                           <div className="flex items-center gap-3 flex-1 min-w-0">
                             <div 
@@ -208,7 +208,7 @@ export function Settings({ categories, setCategories, expenses, loans, setExpens
                                 setCategoryToEdit(cat);
                                 setIsCategoryModalOpen(true);
                               }}
-                              className="p-2 text-gray-400 hover:text-blue-500 transition-colors"
+                              className="p-2 text-gray-400 hover:text-[#5ce1e6] transition-colors"
                             >
                               <Edit2 size={18} />
                             </button>

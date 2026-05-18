@@ -243,7 +243,7 @@ export default function App() {
   };
 
   return (
-    <div className="bg-black min-h-screen text-white font-sans selection:bg-blue-500/30">
+    <div className="bg-black min-h-screen text-white font-sans selection:bg-[#5ce1e6]/30">
       <main className="max-w-md mx-auto relative min-h-screen">
         {activeTab === 'home' && <Home categories={categories} expenses={expenses} loans={loans} onEditExpense={handleEditExpense} onEditLoan={handleEditLoan} />}
         {activeTab === 'storico' && <Storico categories={categories} expenses={expenses} loans={loans} onDeleteExpense={handleDeleteExpense} onDeleteLoan={handleDeleteLoan} onEditExpense={handleEditExpense} onEditLoan={handleEditLoan} />}
@@ -257,7 +257,7 @@ export default function App() {
           dragElastic={0.1}
           dragMomentum={false}
           onClick={handleFabClick}
-          className={`fixed bottom-24 right-6 w-14 h-14 bg-blue-500 hover:bg-blue-600 active:scale-95 transition-colors rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(10,132,255,0.4)] z-30 ${activeTab === 'settings' ? 'hidden' : ''}`}
+          className={`fixed bottom-24 right-6 w-14 h-14 bg-[#5ce1e6] hover:bg-[#4dd1d6] active:scale-95 transition-colors rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(92,225,230,0.4)] z-30 ${activeTab === 'settings' ? 'hidden' : ''}`}
           aria-label="Aggiungi"
         >
           <Plus size={28} className="text-white" />
@@ -267,28 +267,28 @@ export default function App() {
         <nav className="fixed bottom-0 w-full max-w-md bg-[#1C1C1E]/90 backdrop-blur-lg border-t border-[#2C2C2E] flex justify-around items-center h-20 pb-safe z-30">
           <button 
             onClick={() => setActiveTab('home')}
-            className={`flex flex-col items-center gap-1 w-16 ${activeTab === 'home' ? 'text-blue-500' : 'text-gray-500'}`}
+            className={`flex flex-col items-center gap-1 w-16 ${activeTab === 'home' ? 'text-[#5ce1e6]' : 'text-gray-500'}`}
           >
             <HomeIcon size={24} strokeWidth={activeTab === 'home' ? 2.5 : 2} />
             <span className="text-[10px] font-medium">Home</span>
           </button>
           <button 
             onClick={() => setActiveTab('storico')}
-            className={`flex flex-col items-center gap-1 w-16 ${activeTab === 'storico' ? 'text-blue-500' : 'text-gray-500'}`}
+            className={`flex flex-col items-center gap-1 w-16 ${activeTab === 'storico' ? 'text-[#5ce1e6]' : 'text-gray-500'}`}
           >
             <History size={24} strokeWidth={activeTab === 'storico' ? 2.5 : 2} />
             <span className="text-[10px] font-medium">Storico</span>
           </button>
           <button 
             onClick={() => setActiveTab('prestiti')}
-            className={`flex flex-col items-center gap-1 w-16 ${activeTab === 'prestiti' ? 'text-blue-500' : 'text-gray-500'}`}
+            className={`flex flex-col items-center gap-1 w-16 ${activeTab === 'prestiti' ? 'text-[#5ce1e6]' : 'text-gray-500'}`}
           >
             <Users size={24} strokeWidth={activeTab === 'prestiti' ? 2.5 : 2} />
             <span className="text-[10px] font-medium">Prestiti</span>
           </button>
           <button 
             onClick={() => setActiveTab('settings')}
-            className={`flex flex-col items-center gap-1 w-16 ${activeTab === 'settings' ? 'text-blue-500' : 'text-gray-500'}`}
+            className={`flex flex-col items-center gap-1 w-16 ${activeTab === 'settings' ? 'text-[#5ce1e6]' : 'text-gray-500'}`}
           >
             <SettingsIcon size={24} strokeWidth={activeTab === 'settings' ? 2.5 : 2} />
             <span className="text-[10px] font-medium">Impostazioni</span>

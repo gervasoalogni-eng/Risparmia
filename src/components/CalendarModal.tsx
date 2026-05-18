@@ -62,7 +62,7 @@ export function CalendarModal({ isOpen, onClose, onSelect, initialDate }: any) {
                   key={day}
                   onClick={() => handleSelect(day)}
                   className={`h-10 w-10 rounded-full flex items-center justify-center mx-auto text-sm transition-colors
-                    ${isSelected ? 'bg-blue-500 text-white' : isToday ? 'bg-[#2C2C2E] text-white' : 'text-gray-300 hover:bg-[#2C2C2E]'}`}
+                    ${isSelected ? 'bg-[#5ce1e6] text-white' : isToday ? 'bg-[#2C2C2E] text-white' : 'text-gray-300 hover:bg-[#2C2C2E]'}`}
                 >
                   {day}
                 </button>

@@ -114,7 +114,7 @@ export function Home({ categories, expenses, loans, onEditExpense, onEditLoan }:
                     className={`bg-[#1C1C1E] rounded-2xl p-4 flex items-center gap-4 cursor-pointer hover:bg-[#2C2C2E] transition-colors ${item.isPaid ? 'opacity-50' : ''}`}
                     onClick={() => onEditLoan && onEditLoan(item)}
                   >
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-blue-500/20 text-blue-500">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-[#5ce1e6]/20 text-[#5ce1e6]">
                       <Users size={20} />
                     </div>
                     <div className="flex-1 min-w-0">

@@ -8,6 +8,7 @@ export function AddLoanModal({ isOpen, onClose, onSave, existingContacts, loanTo
   const [amount, setAmount] = useState('');
   const [name, setName] = useState('');
   const [date, setDate] = useState(getLocalDateString());
+  const [description, setDescription] = useState('');
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -18,11 +19,13 @@ export function AddLoanModal({ isOpen, onClose, onSave, existingContacts, loanTo
         setAmount(loanToEdit.amount.toString().replace('.', ','));
         setName(loanToEdit.name);
         setDate(loanToEdit.date);
+        setDescription(loanToEdit.description || '');
       } else {
         setType('owes_me');
         setAmount('');
         setName('');
         setDate(getLocalDateString());
+        setDescription('');
       }
       setShowDropdown(false);
     }
@@ -45,7 +48,8 @@ export function AddLoanModal({ isOpen, onClose, onSave, existingContacts, loanTo
       name: name.trim(),
       amount: numAmount,
       date,
-      isPaid: loanToEdit ? loanToEdit.isPaid : false
+      isPaid: loanToEdit ? loanToEdit.isPaid : false,
+      description: description.trim()
     });
     onClose();
   };
@@ -58,7 +62,7 @@ export function AddLoanModal({ isOpen, onClose, onSave, existingContacts, loanTo
           <h2 className="text-white font-semibold text-lg">{loanToEdit ? 'Modifica Prestito' : 'Nuovo Prestito'}</h2>
           <button 
             onClick={handleSave} 
-            className={`font-semibold p-2 ${amount && parseFloat(amount.replace(/\./g, '').replace(',', '.')) > 0 && name.trim() ? 'text-blue-500' : 'text-gray-500'}`}
+            className={`font-semibold p-2 ${amount && parseFloat(amount.replace(/\./g, '').replace(',', '.')) > 0 && name.trim() ? 'text-[#5ce1e6]' : 'text-gray-500'}`}
             disabled={!amount || parseFloat(amount.replace(/\./g, '').replace(',', '.')) <= 0 || !name.trim()}
           >
             Salva
@@ -151,6 +155,17 @@ export function AddLoanModal({ isOpen, onClose, onSave, existingContacts, loanTo
             </div>
             <span className="text-gray-400">{date.split('-').reverse().join('/')}</span>
           </button>
+
+          {/* Description */}
+          <div className="bg-[#2C2C2E] rounded-xl p-3">
+            <input 
+              type="text" 
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+              placeholder="Descrizione (opzionale)"
+              className="bg-transparent w-full text-white outline-none"
+            />
+          </div>
         </div>
       </div>
       <CalendarModal 

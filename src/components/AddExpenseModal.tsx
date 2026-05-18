@@ -54,7 +54,7 @@ export function AddExpenseModal({ isOpen, onClose, onSave, expenseToEdit, catego
           <h2 className="text-white font-semibold text-lg">{expenseToEdit ? 'Modifica Spesa' : 'Nuova Spesa'}</h2>
           <button 
             onClick={handleSave} 
-            className={`font-semibold p-2 ${amount && parseFloat(amount.replace(/\./g, '').replace(',', '.')) > 0 ? 'text-blue-500' : 'text-gray-500'}`}
+            className={`font-semibold p-2 ${amount && parseFloat(amount.replace(/\./g, '').replace(',', '.')) > 0 ? 'text-[#5ce1e6]' : 'text-gray-500'}`}
             disabled={!amount || parseFloat(amount.replace(/\./g, '').replace(',', '.')) <= 0}
           >
             Salva
